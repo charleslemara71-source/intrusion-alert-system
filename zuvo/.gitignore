@@ -1,0 +1,8 @@
+target/
+.settings/
+.classpath
+.project
+.idea/
+*.iml
+# SECRETS - never upload this file to GitHub
+src/main/resources/application-local.properties

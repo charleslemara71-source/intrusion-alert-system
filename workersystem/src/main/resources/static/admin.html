@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - FarmTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🌾 FarmTrack · Admin</div>
+    <div class="nav-links">
+      <span id="adminName"></span>
+      <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat"><div class="num" id="statTotal">0</div><div class="label">Total workers</div></div>
+      <div class="stat"><div class="num" id="statSections">0</div><div class="label">Sections</div></div>
+      <div class="stat"><div class="num" id="statLeaders">0</div><div class="label">Leaders &amp; managers</div></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Registered workers</h2>
+        <input type="text" id="search" class="search" placeholder="Search name, ID, email, role...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th><th>ID number</th><th>Email</th>
+              <th>Role</th><th>Section</th><th>Salary</th><th>Registered</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit window -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <h2>Edit worker</h2>
+      <p class="subtitle" style="color:#6b7280">Change the details and save.</p>
+      <form id="editForm">
+        <input type="hidden" id="editId">
+
+        <div class="field">
+          <label for="editName">Full name</label>
+          <input type="text" id="editName" required>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="editIdNumber">ID number</label>
+            <input type="text" id="editIdNumber" required>
+          </div>
+          <div class="field">
+            <label for="editSection">Section</label>
+            <input type="text" id="editSection">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="editEmail">Email</label>
+          <input type="email" id="editEmail" required>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="editRole">Role</label>
+            <select id="editRole" required>
+              <option value="WORKER">Worker</option>
+              <option value="SECTION_LEADER">Section Leader</option>
+              <option value="MANAGER">Manager</option>
+              <option value="ASSISTANT_MANAGER">Assistant Manager</option>
+              <option value="SECRETARY">Secretary</option>
+              <option value="TREASURER">Treasurer</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="editSalary">Salary</label>
+            <input type="number" id="editSalary" min="0" step="0.01" placeholder="e.g. 25000">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="editPassword">New password (optional)</label>
+          <input type="password" id="editPassword" minlength="6" placeholder="Leave empty to keep the current one">
+          <div class="hint">Passwords are stored encrypted, so they can't be viewed, only reset.</div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/admin.js"></script>
+</body>
+</html>

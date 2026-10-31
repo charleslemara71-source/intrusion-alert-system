@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard - FarmTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">🌾 FarmTrack</div>
+    <div class="nav-links">
+      <button class="btn btn-outline btn-sm" id="logoutBtn">Log out</button>
+    </div>
+  </nav>
+
+    <div class="container">
+    <div class="welcome-banner">
+      <img src="images/farmer_2.jpg" alt="A farm worker holding a crate of fresh lettuce in a greenhouse">
+      <div class="welcome-overlay">
+        <h2 id="welcome">Welcome</h2>
+        <p>Good to see you back on the farm.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="color:#14532d; margin-bottom:14px">Your registered details</h3>
+      <div class="table-wrap">
+        <table><tbody id="details"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+ <script>
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  async function loadDetails() {
+    const res = await fetch("/api/auth/me", { cache: "no-store" });
+    if (!res.ok) { window.location.href = "login.html"; return; }
+    const me = await res.json();
+    if (me.role === "ADMIN") { window.location.href = "admin.html"; return; }
+
+    document.getElementById("welcome").textContent = "Welcome, " + me.fullName;
+    const rows = [
+      ["Full name", me.fullName],
+      ["ID number", me.idNumber],
+      ["Email", me.email],
+      ["Role", me.role.replaceAll("_", " ")],
+      ["Section", me.section || "—"],
+      ["Salary", me.salary != null ? Number(me.salary).toLocaleString() : "Not set yet"]
+    ];
+    document.getElementById("details").innerHTML = rows
+      .map(r => `<tr><th style="width:160px">${r[0]}</th><td>${esc(r[1])}</td></tr>`).join("");
+  }
+
+  loadDetails();
+  setInterval(loadDetails, 10000); // refresh every 10 seconds
+
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.href = "login.html";
+  });
+</script>
+</body>
+</html>

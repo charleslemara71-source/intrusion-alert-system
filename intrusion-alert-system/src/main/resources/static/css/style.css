@@ -1,0 +1,306 @@
+/* =========================================================
+   THEME COLOURS
+   ========================================================= */
+:root {
+    --bg: #050b18;
+    --card: rgba(15, 27, 51, 0.72);
+    --border: rgba(56, 189, 248, 0.18);
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #818cf8;
+    --critical: #ef4444;
+    --high: #f97316;
+    --medium: #eab308;
+    --low: #22c55e;
+}
+
+/* =========================================================
+   PAGE BACKGROUND (used by every page)
+   ========================================================= */
+html, body { min-height: 100%; }
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(56, 189, 248, 0.18), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(129, 140, 248, 0.16), transparent 60%),
+        var(--bg);
+    background-attachment: fixed;
+}
+
+/* Faint tech grid that fades out toward the edges */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+            mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+}
+
+/* The animated network canvas sits behind everything */
+#network-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Real content sits above the background layers */
+.topbar, main, .login-card, .landing-nav, .landing-main, .landing-footer {
+    position: relative;
+    z-index: 1;
+}
+
+.muted { color: var(--muted); }
+
+/* =========================================================
+   SHARED PIECES
+   ========================================================= */
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text);
+    text-decoration: none;
+}
+.brand svg { width: 26px; height: 26px; color: var(--accent); filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.7)); }
+
+.btn-glow {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border: none;
+    color: #04101f;
+    font-weight: 600;
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-glow:hover {
+    color: #04101f;
+    transform: translateY(-1px);
+    box-shadow: 0 0 28px rgba(56, 189, 248, 0.7);
+}
+
+.glass {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+}
+
+/* =========================================================
+   LANDING PAGE
+   ========================================================= */
+.landing-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 2rem;
+}
+
+.hero { padding: 4rem 0 3rem; }
+
+.hero-badge {
+    display: inline-block;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.85rem;
+    background: rgba(56, 189, 248, 0.08);
+    margin-bottom: 1.2rem;
+}
+
+.hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+}
+.gradient-text {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero p.lead { color: var(--muted); max-width: 34rem; margin-bottom: 1.8rem; }
+
+/* Fake live terminal: lines appear one after another */
+.terminal { padding: 0; overflow: hidden; box-shadow: 0 0 40px rgba(56, 189, 248, 0.15); }
+.terminal-bar {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+.terminal-bar span.dot { width: 10px; height: 10px; border-radius: 50%; background: #334155; }
+.terminal-body {
+    padding: 1rem 1.2rem 1.3rem;
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size: 0.82rem;
+    line-height: 1.9;
+}
+.t-line { opacity: 0; transform: translateY(6px); animation: lineIn 0.5s forwards; animation-delay: var(--d); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-ok   { color: #86efac; }
+.t-warn { color: #fde047; }
+.t-crit { color: #fca5a5; font-weight: 600; text-shadow: 0 0 10px rgba(239, 68, 68, 0.6); }
+@keyframes lineIn { to { opacity: 1; transform: translateY(0); } }
+
+.feature-card { padding: 1.5rem; height: 100%; transition: transform 0.2s, border-color 0.2s; }
+.feature-card:hover { transform: translateY(-4px); border-color: rgba(56, 189, 248, 0.5); }
+.feature-card h3 { font-size: 1.1rem; margin: 0.9rem 0 0.4rem; }
+.feature-card p { color: var(--muted); margin: 0; font-size: 0.95rem; }
+.feature-icon {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent);
+}
+.feature-icon svg { width: 24px; height: 24px; }
+
+.step-number {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    font-weight: 700;
+    color: #04101f;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.5);
+}
+
+.section-title { font-size: 1.7rem; font-weight: 600; margin-bottom: 0.4rem; }
+.landing-footer { text-align: center; padding: 2rem 1rem 2.5rem; color: var(--muted); font-size: 0.85rem; }
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+.login-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2.2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+    box-shadow: 0 0 50px rgba(56, 189, 248, 0.12);
+}
+.login-card h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+.login-card .form-control {
+    background: rgba(5, 11, 24, 0.7);
+    border-color: var(--border);
+    color: var(--text);
+}
+.login-card .form-control:focus {
+    background: rgba(5, 11, 24, 0.9);
+    color: var(--text);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+.app-body { min-height: 100vh; }
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.9rem 1.5rem;
+    background: rgba(8, 16, 33, 0.75);
+    border-bottom: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+}
+
+.live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-left: 1rem;
+    padding: 0.15rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: #86efac;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    background: rgba(34, 197, 94, 0.08);
+}
+.live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    animation: pulse 1.6s infinite;
+}
+@keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70%  { box-shadow: 0 0 0 9px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+.stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--muted);
+    border-radius: 12px;
+    padding: 1rem;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-3px); }
+.stat-card.critical { border-left-color: var(--critical); box-shadow: 0 0 22px rgba(239, 68, 68, 0.12); }
+.stat-card.high     { border-left-color: var(--high); }
+.stat-card.medium   { border-left-color: var(--medium); }
+.stat-card.low      { border-left-color: var(--low); }
+.stat-label { color: var(--muted); font-size: 0.85rem; }
+.stat-value { font-size: 1.9rem; font-weight: 600; }
+
+.panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+}
+.panel-title { font-size: 1.1rem; margin-bottom: 1rem; }
+
+.table-dark {
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: rgba(56, 189, 248, 0.07);
+    --bs-table-border-color: rgba(148, 163, 184, 0.15);
+}
+
+.badge-sev {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+.badge-sev.CRITICAL { background: var(--critical); box-shadow: 0 0 12px rgba(239, 68, 68, 0.65); }
+.badge-sev.HIGH     { background: var(--high); }
+.badge-sev.MEDIUM   { background: var(--medium); }
+.badge-sev.LOW      { background: var(--low); }
